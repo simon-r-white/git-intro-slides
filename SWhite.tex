@@ -241,8 +241,18 @@ git commit -m"testing"
 
 
 
+\begin{frame}
+  \begin{beamercolorbox}[sep=1em]{frametitleback}
+    \centering
+    \begin{Huge}
+      {\usebeamercolor[fg]{frametitle}Reasons to use GIT}
+    \end{Huge}
+  \end{beamercolorbox}
 
-\begin{frame}[fragile]{latexdiff}
+\end{frame}
+
+
+\begin{frame}[fragile]{Easily integrate with latexdiff}
 
 Config file:
 \begin{verbatim}
@@ -261,7 +271,7 @@ git ldiff v1.0..v1.1 Outline.tex > LDIFF.tex
 \end{frame}
 
 
-\begin{frame}[fragile]{GNU Meld}
+\begin{frame}[fragile]{GNU Meld for viewing differences}
 
 Config file:
 \begin{verbatim}
@@ -277,30 +287,119 @@ git mdiff v1.0..v1.1 Outline.tex
 
 
 
-\begin{frame}{Working with multiple clones}
+\begin{frame}[fragile]{Ignoring files (for cleaner repositories)}
+  
+  See GIT-talk repo
+
+  \itshape\color{gray}
+  The status command can get quite busy (especially with unnecessary
+  \LaTeX files).
+\begin{verbatim}
+## create a file in repository called .gitignore
+## list patterns to ignore, such as
+
+*.out
+*.aux
+
+
+## run the status command to see difference
+git status
+\end{verbatim}
+
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Working with multiple clones}
   
   See GIT-talk repo (and clones)
 
+  \vspace{1em}
+
+  \itshape\color{gray}
+  Using this example repository, make a clone
+\begin{verbatim}
+git clone /path/to/repo/on/your/computer NEW-NAME
+\end{verbatim}
+
+
+\begin{verbatim}
+## within clone
+
+git remote -v ## shows remotes this repo is aware of
+
+git fetch origin ## fetch commits from remote repo
+\end{verbatim}
+
+
+\begin{verbatim}
+## within first repo
+
+git remote add DAVE /path/to/NEW-NAME
+
+git fetch DAVE
+\end{verbatim}
+
+
+
 \end{frame}
 
 
 
-\begin{frame}{Merges with multiple committers}
+\begin{frame}[fragile]{Merges with multiple committers}
   
   See NSPN-live repo
 
+  \itshape\color{gray}
+  Using this example repository
+\begin{verbatim}
+## bring branches together
+git checkout master
+
+git diff git-magic^..git-magic
+## or
+git diff 8c0c706..04aebee
+
+git branch TEST
+git checkout TEST
+
+git merge git-magic
+\end{verbatim}
+
+
 \end{frame}
 
-\begin{frame}{Cloned repos for code}
+\begin{frame}[fragile]{Cloned repos for code}
   
   See FM-p repos
 
+
+  \itshape\color{gray}
+  Create local clones of repository for running code, while continuing
+  to edit the original
+\begin{verbatim}
+git clone /path/to/repo Cluster-cpy-A
+\end{verbatim}
+
+
 \end{frame}
 
 
-\begin{frame}{Dropbox trick}
+\begin{frame}[fragile]{Dropbox trick (advanced paths)}
   
   See NSPN dropbox+repos
+
+
+  \itshape\color{gray}
+  By default the {\upshape\texttt{.git}} folder sits inside the working
+  directory, but it can be elsewhere. For Dropbox, we can host a repo
+  inside a dropbox folder without the associated {\upshape\texttt{.git}}
+\begin{verbatim}
+git --git-dir=/path/to/.git 
+    --work-tree=/path/to/working-directory
+\end{verbatim}
+
 
 \end{frame}
 
