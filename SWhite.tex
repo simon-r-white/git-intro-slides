@@ -1,0 +1,336 @@
+
+
+
+\title{Analysis of longitudinal data:\\MFQ and brain structure}
+%\subtitle{spatio-temporal modelling in neuroimaging}
+\author{Kirstie Whitaker, Petra Vertes, Simon R.~White, Ed Bullmore}
+%\institute{MRC Biostatistics Unit, University of Cambridge}
+\date{2018/Mar/09}
+
+\begin{document}
+
+\maketitle
+
+
+
+
+
+
+
+
+\begin{frame}{Longitudinal data}
+  
+  \begin{block}{Benefits}
+    \begin{itemize}
+    \item Separate within and between subject variability.
+    \item Infer temporal effects \emph{(not necessarily causal, also
+        the age-period-cohort problem)}.
+    \item Obtain subject-specific effects.
+    \end{itemize}
+  \end{block}
+
+  \pause
+
+  \begin{block}{New problems (beyond cross-sectional data)}
+    \begin{itemize}
+    \item Incomplete data due to drop out (MCAR/MAR/MNAR).
+    \item Need to account for repeated measures within analysis.
+    \item Potentially more complex methods.
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{block}{Design}
+    NSPN uses an Accelerated Longitudinal Design
+  \end{block}
+
+\end{frame}
+
+\begin{frame}{Analysis}
+
+  \begin{block}{(Generalised) Linear mixed-effects modelling}
+    \begin{itemize}
+    \item Longitudial data fits within random-effect structure.
+    \item Can accommodate incomplete data mechanisms.
+    \item Well established.
+    \item Normal assumption on random-effects.
+    \end{itemize}
+  \end{block}
+  
+  \begin{block}{Generalised Estimating Equations}
+    \begin{itemize}
+    \item Robust to mis-specified random-effects.
+    \item Variants allow more esoteric random-effects.
+    \item Inference on marginal model.
+    \item Does not give subject-level effects.
+    \end{itemize}
+  \end{block}
+  
+\end{frame}
+
+\begin{frame}{Non-straight line relationships}
+  
+  \begin{block}{Fractional Polynomials (Royston \&Altman, 94)}
+    A pre-defined set of transformations, specifically:
+    \begin{gather*}
+      \text{1\textsuperscript{st} order, } x^{p} \quad\text{and}\quad
+      \text{2\textsuperscript{nd} order, } x^{p} + x^{q}\\
+      p,q \in \{-2,-1,-\frac{1}{2},0,\frac{1}{2},1,2,3\}
+    \end{gather*}
+  \end{block}
+  \pause
+  \begin{adjustbox}{center}
+    \includegraphics[height=0.5\textheight]{Rplots/FP.pdf}
+  \end{adjustbox}%
+\end{frame}
+
+\begin{frame}{Model selection}
+  \begin{block}{Many possible models}
+    \begin{itemize}
+    \item 1\textsuperscript{st} order FP models: 8
+    \item 2\textsuperscript{nd} order FP models: 36
+    \item With and without a Sex-interaction
+    \end{itemize}
+    \begin{gather*}
+      y \sim FP(\text{Age}) + \text{Sex} + \text{Centre} +
+      fp(\text{Age})\times\text{Sex} + \text{rand-effects}
+    \end{gather*}
+  \end{block}%
+  
+
+  \pause
+
+  \begin{block}{Statistical criteria}
+    \begin{adjustbox}{minipage=0.7\textwidth,center}
+      \begin{itemize}
+      \item[AIC] Akaike information criterion
+      \item[BIC] Bayesian information criterion
+      \end{itemize}
+    \end{adjustbox}
+
+  \end{block}
+
+
+  \emph{Aside: Maximum Likelihood for model selection, Restricted
+    Maximum Likelihood for inference}
+\end{frame}
+
+
+\begin{frame}{Multi-stage design}
+  
+  \begin{block}{Questionnaire stage}
+    \begin{itemize}
+    \item Accelerated Longitudinal Design
+    \item Wider sampling to meet second stage criteria ($N=2000$)
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Imaging stage}
+    \begin{itemize}
+    \item Balanced sampling across age and sex
+    \item Sub-sample ($N=300$)
+    \end{itemize}
+  \end{block}
+
+
+\end{frame}
+
+\begin{frame}{Linking stages}
+  \begin{block}{Joint modelling}
+    \begin{itemize}
+    \item Large and complex model
+    \item Substantial
+    \end{itemize}    
+  \end{block}
+
+  \begin{block}{Multi-stage analysis}
+    \begin{itemize}
+    \item Analyse each stage separately
+    \item Propogate results from one stage to the next
+    \end{itemize}    
+  \end{block}
+  
+\end{frame}
+
+
+\begin{frame}{MFQ}
+  
+  \begin{block}{``Best'' model (BIC = 46988.39)}
+    \begin{gather*}
+      \text{MFQ}_{ij} = \underbrace{\beta_0 + \beta_S \text{Sex}_i +
+        \beta_A \text{Age}_{ij}^{-2}}_{\text{main-effects}} +
+      \underbrace{\beta_{SA}
+        \left(\text{Sex}_i\times\text{Age}_{ij}^{-2}\right)}_{\text{Interaction}}
+      \\+ \underbrace{u_{i0} + u_{iA}
+        \text{Age}_{ij}^{-2}}_{\text{random-effects}}
+    \end{gather*}
+  \end{block}
+
+  \begin{block}{``Simple'' model}
+    \begin{gather*}
+      \text{MFQ}_{ij} = \underbrace{\beta_0 + \beta_S \text{Sex}_i +
+        \beta_A \text{Age}_{ij}}_{\text{main-effects}} +
+      \underbrace{\beta_{SA}
+        \left(\text{Sex}_i\times\text{Age}_{ij}\right)}_{\text{Interaction}}
+      \\+ \underbrace{u_{i0}}_{\text{random-effects}}
+    \end{gather*}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}{Equivalent MFQ models ($\delta_{\text{BIC}}<2$)}
+
+  \begin{block}{2\textsuperscript{nd} model (BIC = 46988.69)}
+    \begin{gather*}
+      \text{MFQ}_{ij} = \underbrace{\beta_0 + \beta_S \text{Sex}_i +
+        \beta_A \text{Age}_{ij}^{-1}}_{\text{main-effects}} +
+      \underbrace{\beta_{SA}
+        \left(\text{Sex}_i\times\text{Age}_{ij}^{-1}\right)}_{\text{Interaction}}
+      \\+ \underbrace{u_{i0} + u_{iA}
+        \text{Age}_{ij}^{-1}}_{\text{random-effects}}
+    \end{gather*}
+  \end{block}
+  \begin{block}{3\textsuperscript{rd} model (BIC = 46989.73)}
+    \begin{gather*}
+      \text{MFQ}_{ij} = \underbrace{\beta_0 + \beta_S \text{Sex}_i +
+        \beta_A \text{Age}_{ij}^{-\frac{1}{2}}}_{\text{main-effects}} +
+      \underbrace{\beta_{SA}
+        \left(\text{Sex}_i\times\text{Age}_{ij}^{-\frac{1}{2}}\right)}_{\text{Interaction}}
+      \\+ \underbrace{u_{i0} + u_{iA}
+        \text{Age}_{ij}^{-\frac{1}{2}}}_{\text{random-effects}}
+    \end{gather*}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}{MFQ plots}
+  \only<1>{\begin{adjustbox}{center}
+      \includegraphics[width=\linewidth]{Rplots/Tident.MFQ3-full.pdf}
+    \end{adjustbox}\par}
+  \only<2>{\begin{adjustbox}{center}
+      \includegraphics[width=\linewidth]{Rplots/Tident.MFQ3-narrow.pdf}
+    \end{adjustbox}\par}
+  \only<3>{\begin{adjustbox}{center}
+      \includegraphics[width=\linewidth]{Rplots/Tident.MFQ3-raw.pdf}
+    \end{adjustbox}\par}
+  \only<4>{\begin{adjustbox}{center}
+      \includegraphics[width=\linewidth]{{Rplots/Tident.MFQ3-raw+best.pdf}}
+    \end{adjustbox}\par}
+  
+\end{frame}
+
+\begin{frame}{Derived measures}
+  \begin{adjustbox}{center}
+    \includegraphics[width=\linewidth]{{Rplots/Tident.MFQ3-derived.pdf}}
+  \end{adjustbox}\par
+\end{frame}
+
+\begin{frame}{Brain regions}
+  
+  \begin{itemize}
+  \item Repeat same procedure on every brain region
+  \item Using APARC-500 parcellation
+  \end{itemize}
+
+  \begin{itemize}
+  \item Include \alert{Centre} in model
+  \item Only include random-intercept
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Brain structures}
+
+
+  \begin{adjustbox}{center}
+    \includegraphics[width=0.8\textwidth]{../../pysurfer/500aparc_MT_frac+030_mean/DATraw-m14a_SETall_MODraw/UisVis/SiC0A+10xxxRxxx_SiCmA+10xxxRxxx/PNGS/Tident_MFQ_mid-point_corr_ranef-1_m_pial_classic_FourHorBrains.png}
+  \end{adjustbox}
+  \begin{adjustbox}{center}
+    \footnotesize{\usebeamercolor[fg]{item}Fig:} \emph{MFQ(mid-point)
+      association with MT(rand-intercept)}
+  \end{adjustbox}
+
+  \begin{adjustbox}{center}
+    \includegraphics[width=0.8\textwidth]{../../pysurfer/500aparc_thickness/DATraw-m14a_SETall_MODraw/UisVis/SiC0A+10xxxRxxx_SiCmA+10xxxRxxx/PNGS/Tident_MFQ_mid-point_corr_ranef-1_m_pial_classic_FourHorBrains.png}
+  \end{adjustbox}
+  \begin{adjustbox}{center}
+    \footnotesize{\usebeamercolor[fg]{item}Fig:} \emph{MFQ(mid-point)
+      association with CT(rand-intercept)}
+  \end{adjustbox}
+
+\end{frame}
+
+
+\begin{frame}{Next steps}
+  
+  \begin{block}{``best'' brain model}
+    \begin{itemize}
+    \item Currently selecting global ``best'' model across all brain regions
+    \item Potentially averaging, which may attenuate signal
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Linking MFQ to brain changes}
+    \begin{itemize}
+    \item Cluster brain regions based on model fits
+    \item Cluster based on `similar' trajectories
+    \end{itemize}
+  \end{block}
+
+  
+\end{frame}
+
+
+
+
+\begin{frame}{Acknowledgments}
+
+  \begin{adjustbox}{center}
+    \begin{minipage}{0.24\linewidth}
+      \includegraphics[width=0.45\columnwidth,height=0.45\columnwidth,keepaspectratio]{thanks/{kirstie.whitaker}}
+
+      \begin{minipage}[b]{\linewidth}
+        \scriptsize{}Kirstie Whitaker
+      \end{minipage}
+    \end{minipage}
+    \begin{minipage}{0.24\linewidth}
+      \includegraphics[width=0.45\columnwidth,height=0.45\columnwidth,keepaspectratio]{thanks/petra.vertes}
+
+      \begin{minipage}[b]{\linewidth}
+        \scriptsize{}Petra Vertes
+      \end{minipage}
+    \end{minipage}
+    \begin{minipage}{0.24\linewidth}
+      \includegraphics[width=0.45\columnwidth,height=0.45\columnwidth,keepaspectratio]{thanks/{ed.bullmore}}
+
+      \begin{minipage}[b]{\linewidth}
+        \scriptsize{}Ed Bullmore
+      \end{minipage}
+    \end{minipage}
+  \end{adjustbox}
+
+  \vspace{2em}
+
+  \begin{adjustbox}{center}
+    \begin{tikzpicture}[node distance=1mm]
+      \node (NSPN) {\includegraphics[height=2em]{logo/NSPN_logo}};
+      \node (BSU) [left=of NSPN]
+      {\includegraphics[height=2em]{logo/MRC_Biostatistics_Cambridge}};
+      \node (ATI) [right=of NSPN]
+      {\includegraphics[height=2em]{logo/ati}};
+    \end{tikzpicture}
+  \end{adjustbox}
+
+\end{frame}
+
+
+
+
+
+
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "SWhite-slides"
+%%% End: 
