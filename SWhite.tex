@@ -108,12 +108,17 @@
 \begin{frame}{Options}
   
   \begin{itemize}
-  \item[subversion]
-  \item[Mercurial]
-  \item[GIT]
+  \item subversion
+  \item Mercurial
+  \item GIT
+  \item Many others
   \end{itemize}
 
-  
+  Features to consider:
+  \begin{itemize}
+  \item Server-Client or Distributed
+  \item Direction of the wind today
+  \end{itemize}
 
 \end{frame}
 
@@ -125,18 +130,160 @@
   \item graphical user interface (GUI)\\\url{https://git-scm.com/download/gui/windows}
   \end{itemize}
 
+  Today we'll do a little of both.
+
+
 \end{frame}
 
 
-\begin{frame}[fragile]{GIT commands}
+\begin{frame}{GIT fundamentals}
   
+  \begin{itemize}
+  \item Every repository contains the complete history\\(this means
+    they can get big)
+  \item There are three parts to work with
+    \begin{adjustbox}{center}
+      \includegraphics[width=0.6\textwidth]{img/areas}
+    \end{adjustbox}
+  \item A repository on its own is not safe
+  \end{itemize}
+
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]{GIT basic commands}
+
+  \begin{itemize}
+  \item make a new repository
+\begin{verbatim}
+git init
+\end{verbatim}
+  \item staging files
 \begin{verbatim}
 git add
 git add -u ./
 git add -A ./
 \end{verbatim}
+  \item commit change-set to repo
+\begin{verbatim}
+git commit -m"testing"
+\end{verbatim}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{GIT overviews}
+
+  \begin{itemize}
+  \item Details of commits
+\begin{verbatim}
+git log
+git log -n2
+git log --name-status -n2
+\end{verbatim}
+  \item Details of current working directory
+\begin{verbatim}
+git status
+\end{verbatim}
+  \item History
+\begin{verbatim}
+git hist
+\end{verbatim}
+{\fontsize{6}{8}{\begin{verbatim}
+## Config file
+[alias]
+    hist   = log --all --pretty=format:\"%C(auto)%h%Creset %C(magenta)%ad%Creset 
+                                         |%C(auto)%d%Creset %C(auto)%s%Creset 
+                                         %C(blue)[%an]%Creset %C(green)<%cr>%Creset\" 
+                 --graph --date=short
+\end{verbatim}}}
+  \end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]{GIT basic commands}
+
+  \begin{itemize}
+  \item make a new repository
+\begin{verbatim}
+git init
+\end{verbatim}
+  \item staging files
+\begin{verbatim}
+git add
+git add -u ./
+git add -A ./
+\end{verbatim}
+  \item commit change-set to repo
+\begin{verbatim}
+git commit -m"testing"
+\end{verbatim}
+  \end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]{latexdiff}
+
+Config file:
+\begin{verbatim}
+[alias]
+    wdiff = diff --color-words --ignore-all-space
+    ldiff = difftool -y -t latex
+[difftool.latex]
+    cmd = latexdiff "$LOCAL" "$REMOTE"
+\end{verbatim}
+  
+\begin{verbatim}
+git diff v1.0..v1.1 Outline.tex
+git ldiff v1.0..v1.1 Outline.tex > LDIFF.tex
+\end{verbatim}
 
 \end{frame}
+
+
+\begin{frame}[fragile]{GNU Meld}
+
+Config file:
+\begin{verbatim}
+[alias]
+    mdiff = difftool -t meld
+\end{verbatim}
+  
+\begin{verbatim}
+git mdiff v1.0..v1.1 Outline.tex
+\end{verbatim}
+
+\end{frame}
+
+
+
+\begin{frame}{Merges with multiple committers}
+  
+  See NSPN-live repo
+
+\end{frame}
+
+\begin{frame}{Cloned repos for code}
+  
+  See FM-p repos
+
+\end{frame}
+
+
+\begin{frame}{Dropbox trick}
+  
+  See NSPN dropbox+repos
+
+\end{frame}
+
+
+
 
 
 % \begin{frame}{EXAMPLE IMAGE SLIDE}
