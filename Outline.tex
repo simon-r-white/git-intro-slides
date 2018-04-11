@@ -2,10 +2,61 @@
 
 \usepackage{xcolor}
 
+\usepackage{hyperref}
+\definecolor{linkCol}{rgb}{0.0,0.4,0.8}
+\hypersetup{%
+  colorlinks,
+  breaklinks,
+  linkcolor=linkCol,
+  urlcolor=linkCol,
+  anchorcolor=linkCol,
+  citecolor=linkCol
+}
+
+
 \newcommand{\ALERT}[1]{\textcolor{red}{#1}}
 \newcommand{\CMD}[1]{\texttt{#1}}
 
+\newcommand*{\GITMAGIC}{}% COMMENT THIS LINE TO GET WORKING IN OVERLEAF (?)
+
+
+%% The following is a hack to get GIT meta-data into LaTeX
+%% (there are other options, such as the gitinfo2 package - but that
+%% uses git-hooks, too much effort)
+%% (Alternatively, can use a Makefile to insert git-meta-data)
+%%
+%% [NOTE: this requires --shell-escape (and enable-write18) when running pdflatex]
+%%
+%% Uses some deep&dark LaTeX magic
+%%  -- [[https://ctan.org/pkg/macros2e]]
+%%  -- 
+
+\def\twodigits#1{\ifnum#1<10 0\fi\the#1}
+\def\Date{\leavevmode\hbox{\the\year-\twodigits\month-\twodigits\day}}
+
+\ifdefined\GITMAGIC%
+%
+\makeatletter
+\immediate\write18{git log -1 --pretty=format:"\@backslashchar gdef\@backslashchar GITHash{\@percentchar h}\@percentchar n\@backslashchar gdef\@backslashchar GITDate{\@percentchar ad}\@percentchar n" --date=short > GIT.tmp }
+\immediate\write18{TEST=`git describe --always`; echo "\@backslashchar gdef\@backslashchar GITDescribe{\@backslashchar url{${TEST}}}" >> GIT.tmp } %$ (This commented-out dollar sign is needed to balance the shell-variable one
+\makeatother
+\input{GIT.tmp}
+
+\date{{\small{}Date(\Date), GIT: Commit(\GITDate) Describe(\GITDescribe)}}
+%
+\else%
+\date{{\small{}Date(\Date), GIT: \LaTeX{} magic to obtain GIT variables turned off}}
+\fi%
+%
+
+\title{GIT talk}
+\author{S.R.~White}
+
+
+
 \begin{document}
+
+\maketitle
 
 \section{Aims}
 \label{sec:aims}
@@ -44,4 +95,5 @@ Demonstrate
 %%% Local Variables: 
 %%% mode: latex
 %%% TeX-master: t
+%%% LaTeX-command: "latex -shell-escape"
 %%% End: 
